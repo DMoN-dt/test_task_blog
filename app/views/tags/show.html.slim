@@ -1,0 +1,12 @@
+# encoding: UTF-8
+
+- content_for :html_title do
+  | Посты с тэгом #{@tag.name}
+
+h1 Посты с тэгом &laquo;#{@tag.name}&raquo;
+.posts
+  = render @articles
+
+  center
+    .page_pagination
+      = will_paginate @articles, :container => false

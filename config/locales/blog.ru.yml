@@ -1,0 +1,21 @@
+---
+ru:
+  activerecord:
+    attributes:
+      user:
+        password: Пароль
+        password_confirmation: Пароль ещё раз
+        login: Логин
+        email: E-mail
+        sign_in_count: Посещений
+        last_sign_in_at: Последнее посещение
+        created_at: Дата регистрации
+        remember_me: Запомнить меня
+        name: Имя
+        lastname: Фамилия
+        nickname: Псевдоним
+      article:
+        created_at: Дата создания
+        title: Заголовок
+        content: Текст публикации
+        tag_list: Ключевые слова

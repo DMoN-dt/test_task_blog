@@ -1,0 +1,8 @@
+- content_for :html_title do
+  | Создание нового поста
+
+h1 Новый пост
+
+== render 'form'
+br
+= link_to 'Отмена', articles_path, class: 'btn btn-secondary'

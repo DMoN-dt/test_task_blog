@@ -1,0 +1,33 @@
+- content_for :html_title do
+  = @title
+
+h1 #{@title}
+
+.row
+  .col-md-10
+    .posts
+      - @is_any = false
+      - @articles.each do |article|
+        = render article
+    
+      - if(@is_any)
+        center
+          .page_pagination
+            = will_paginate @articles, :container => false
+    
+    br
+    - if(user_signed_in?)
+      - if(!@is_any)
+        p У вас ещё нет ни одного поста. Сейчас самое время написать что-нибудь.
+    - else
+      - if(!@is_any)
+        p Ещё никто ничего не написал. Будьте первыми!
+      p Войдите в личный кабинет, чтобы создать собственный пост.
+      = link_to 'Вход / Регистрация', new_user_session_path, class: 'btn btn-primary'
+	  p &nbsp;
+  
+  .col-md-2
+    h4 Облако тэгов
+    - if(!@tags.nil?)
+      .tags
+        = render @tags

@@ -1,0 +1,15 @@
+- content_for :html_title do
+  | Доступ запрещён (ошибка 403 Forbidden)
+
+h2[class="pgtitle"]Доступ запрещён
+
+h4 У Вас не достаточно прав для доступа в данный раздел !
+- if !flash[:alert_show].blank?
+  p[style="color:#b00000"] #{flash[:alert_show]}
+br
+- if user_signed_in?
+  p Если Вам были назначены достаточные права, тогда попробуйте #{link_to "Выйти", destroy_user_session_path, :method => :delete} из системы и войти вновь.
+- else
+  p Для входа нажмите: #{link_to "Войти", new_user_session_path}.
+  
+p В случае повторяющихся ошибок, свяжитесь с администрацией сайта.

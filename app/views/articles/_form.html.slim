@@ -1,0 +1,42 @@
+= form_for @article do |f|
+  - if @article.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@article.errors.count, "ошибки")} не позволяют сохранить данный пост:"
+      ul
+        - @article.errors.full_messages.each do |message|
+          li = message
+
+  .field.form-group.row
+    .col-2
+      = f.label :created_at
+    .col-10
+      = f.datetime_local_field  :created_at, value: (@article.created_at.blank? ? Time.now.to_formatted_s(:input_datestr) : @article.created_at.to_formatted_s(:input_datestr)) , class: 'form-control'
+
+  .field.form-group.row
+    .col-2
+      = f.label :title
+    .col-10
+      = f.text_field :title, class: 'form-control'
+  
+  .field.form-group.row
+    .col-2
+      = f.label :tag_list
+    .col-10
+      = f.text_field :tag_list, class: 'form-control'
+
+  .field.form-group.row
+    .col-2
+      = f.label :content
+    .col-10
+      = f.text_area :content, class: 'form-control', rows: 7
+
+  .field.form-group.row
+    .col-sm-2
+    .col-sm-10
+      .form-check
+        = f.label :is_published, class: 'form-check-label' do
+          = f.check_box :is_published, class: 'form-check-input'
+          |Опубликовать
+
+  .actions
+    = f.submit "Сохранить пост", class: 'btn btn-primary'

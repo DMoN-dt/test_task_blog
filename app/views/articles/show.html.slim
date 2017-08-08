@@ -1,0 +1,110 @@
+- content_for :html_title do
+  = @article.title
+
+p.pseudo-bread = link_to 'Все посты', articles_path
+
+h1 = @article.title
+
+.author
+  span.create-date #{I18n.l(@article.created_at, :format => :long)}
+  span.author-name Автор: #{@author_is_me ? ('Вы (' + @author_name + ')') : @author_name}
+
+- if(!@article.is_published)
+  p: b Пост не опубликован!
+
+.tags
+  = render @article.tags
+
+p = @article.content.gsub(/[\n]+/, "<br/>").html_safe
+
+.buttons
+  - if(@article.user_id == @current_user_id)
+    = link_to 'Редактировать', edit_article_path(@article), class: 'btn btn-secondary'
+    = link_to 'Удалить', @article, data: { confirm: 'Вы уверены?' }, method: :delete, class: 'btn btn-warning'
+
+.comments
+  .write-comment
+    p Ваш комментарий:
+    = form_for 'comment', url: comments_path do |f|
+      = f.hidden_field(:article_id, :value => @article.id)
+      = f.text_area :content, class: 'form-control', rows: 5
+      = f.submit "Комментировать", class: 'btn btn-primary btn-send'
+    
+    = form_for 'comment', url: inline_update_comments_path, remote: true, method: :post, html: {class: 'hidden-xs-up', id: 'edit_comment'} do |f|
+      = f.hidden_field(:id, :value => '')
+      = f.text_area :content, class: 'form-control', rows: 5
+      = f.submit "Обновить", class: 'btn btn-warning btn-send'
+      span.btn.btn-secondary.btn-cancel Отмена
+    
+  .list-comments
+    - @comments.each do |comment|
+      
+      .comment(data-id="#{comment.id}")
+        - author_name = ((comment.user.id.present?) ? comment.user.get_author_name : 'Аноним')
+        
+        .author
+          span.create-date #{I18n.l(comment.created_at, :format => :long)}
+          span.author-name Автор: #{(comment.user_id == @current_user_id) ? ('Вы (' + author_name.to_s + ')') : author_name}
+
+          - if(comment.user_id == @current_user_id)
+            span#change_comment.ctrl-btn Изменить
+            = link_to 'Удалить', comment, method: :delete, remote: true, class: 'ctrl-btn', id: 'delete_comment'
+        
+        p.content #{comment.content}
+
+
+  javascript:
+    
+    function article_show_onclick(event){
+      etarget = $(event.target);
+      if(etarget.is("#change_comment")){
+        parent_obj = etarget.parents(".comment[data-id]:first");
+        if(parent_obj.length == 1){
+          obj = $("form#edit_comment");
+          if(obj.length == 1){
+			form_parent = obj.parents(".comment[data-id]:first");
+			if(form_parent.length == 1){
+			  form_parent.children(".content").show();
+			}
+			
+			obj.detach();
+            obj.appendTo(parent_obj);
+            obj.children("#comment_id:first").val(parent_obj.attr('data-id'));
+            
+            content_obj = parent_obj.children(".content");
+            if(content_obj.length == 1){
+              obj.children("#comment_content:first").val(content_obj.text());
+              content_obj.hide();
+            }
+            obj.removeClass('hidden-xs-up');
+          }
+        }
+        event.preventDefault();
+      }
+      else if(etarget.is("form#edit_comment .btn-cancel")){
+        parent_obj = etarget.parents(".comment[data-id]:first");
+        if(parent_obj.length == 1){
+          obj = $("form#edit_comment");
+          if(obj.length == 1){
+            obj.children("#comment_id:first").val('');
+          }
+          
+          content_obj = parent_obj.children(".content");
+          if(content_obj.length == 1){
+            obj.addClass('hidden-xs-up');
+			content_obj.show();
+          }
+        }
+      }
+    }
+    
+    window["article_show_onload"] = function (page_frame){
+      $(document).on("click", article_show_onclick);
+    }
+    
+    window["article_show_teardown"] = function (page_frame){
+      $(document).off("click", article_show_onclick);
+    }
+  
+    $(document).on("turbolinks:load", window["article_show_onload"]);
+    $(document).on("turbolinks:before-cache", window["article_show_teardown"]);

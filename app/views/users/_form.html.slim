@@ -1,0 +1,28 @@
+= form_for @user do |f|
+  - if @user.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@user.errors.count, "ошибки")} не позволяют сохранить информацию о пользователе:"
+      ul
+        - @user.errors.full_messages.each do |message|
+          li = message
+
+  .field.form-group.row
+    .col-2
+      = f.label :nickname
+    .col-10
+      = f.text_field :nickname, class: 'form-control', maxlength: 50
+  
+  .field.form-group.row
+    .col-2
+      = f.label :name
+    .col-10
+      = f.text_field :name, class: 'form-control', maxlength: 50
+
+  .field.form-group.row
+    .col-2
+      = f.label :lastname
+    .col-10
+      = f.text_field :lastname, class: 'form-control', maxlength: 50
+  
+  .actions
+    = f.submit "Сохранить", class: 'btn btn-primary'

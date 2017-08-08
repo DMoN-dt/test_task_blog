@@ -1,0 +1,11 @@
+- content_for :html_title do
+  | Редактирование поста
+
+h1 Редактирование поста
+
+== render 'form'
+
+.buttons
+  = link_to 'Посмотреть', @article, class: 'btn btn-info'
+  = link_to 'Мои посты', my_articles_path, class: 'btn btn-secondary'
+

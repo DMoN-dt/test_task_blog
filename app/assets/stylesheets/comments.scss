@@ -1,0 +1,32 @@
+// Place all the styles related to the Comments controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.comments {
+	border-top: solid 1px #ddd;
+	margin-top: 1rem; padding-top: 2rem;
+	
+	.list-comments {margin-top: 2rem;}
+	
+	.comment {
+		margin-bottom: 1rem;
+		
+		.ctrl-btn {margin-left: 1rem; font-size: .8rem; text-decoration: underline; cursor: pointer;}
+		.ctrl-btn:hover, .ctrl-btn:active, .ctrl-btn:focus {text-decoration: none;}
+		
+		.ctrl-btn#change_comment {color: #66a4da;}
+		.ctrl-btn#change_comment:hover, .ctrl-btn#change_comment:active, .ctrl-btn#change_comment:focus {color: #005fb1;}
+		.ctrl-btn#delete_comment {color: #d26b6b;}
+		.ctrl-btn#delete_comment:hover, .ctrl-btn#delete_comment:active, .ctrl-btn#delete_comment:focus {color: #bb0909;}
+	}
+	
+	.author {
+		font-size: .85rem;
+	}
+	
+	.content {margin: 0;}
+	
+	.btn {cursor: pointer;}
+	.btn-send, .btn-cancel {margin-top: .5rem;}
+	.btn-cancel {margin-left: 1rem;}
+}

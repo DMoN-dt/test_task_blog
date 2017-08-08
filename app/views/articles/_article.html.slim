@@ -1,0 +1,23 @@
+- @is_any = true if(!@is_any)
+- author_name = ((article.user.id.present?) ? article.user.get_author_name : 'Аноним')
+ 
+.post
+  h5 = article.title
+  .author
+    span.create-date #{I18n.l(article.created_at, :format => :long)}
+    span.author-name Автор: #{(article.user_id == @current_user_id) ? ('Вы (' + author_name.to_s + ')') : author_name}
+  
+  .tags
+    span Тэги:
+	= render article.tags
+  
+  - if(!article.is_published)
+    p: b Пост не опубликован!
+  
+  p.content #{(truncate article.content, length: 200, separator: /\w/, omission: "...").gsub(/[\n]+/, "<br/>").html_safe}
+  .buttons
+    = link_to 'Читать', article, class: 'btn btn-primary'
+    
+    - if(article.user_id == @current_user_id)
+      = link_to 'Редактировать', edit_article_path(article), class: 'btn btn-success'
+      = link_to 'Удалить', article, data: { confirm: 'Вы уверены?' }, method: :delete, class: 'btn btn-warning'

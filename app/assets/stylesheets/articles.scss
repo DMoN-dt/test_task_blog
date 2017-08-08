@@ -1,0 +1,38 @@
+// Place all the styles related to the Articles controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.pseudo-bread {margin-bottom: 1	rem;}
+
+.author {
+	color: #a0a0a0;
+	.author-name {margin-left: 2rem;}
+}
+
+.buttons {
+	margin-top: 3rem;
+	
+	.btn {margin-left: 1rem; margin-right: 1rem;}
+}
+
+.posts {
+	.post {
+		border: solid 1px #ddd;
+		padding: 1rem;
+		margin-top: 2rem;
+	}
+	
+	.post:hover {border-color: #bababa;}
+	
+	.page_pagination {margin: 2rem 0; }
+}
+
+.tags {
+	margin-bottom: 1rem; font-size: .85rem;
+	
+	span {color: #a0a0a0; margin-right: .5rem;}
+	
+	a {margin-left: 1rem; }
+	a:first-of-type {margin-left: 0;}
+}
