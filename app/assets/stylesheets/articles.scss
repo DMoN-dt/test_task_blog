@@ -21,9 +21,15 @@
 		border: solid 1px #ddd;
 		padding: 1rem;
 		margin-top: 2rem;
+		
+		.btn-cmd-edit, .btn-cmd-delete {display: none;}
 	}
 	
-	.post:hover {border-color: #bababa;}
+	.post:hover {
+		border-color: #bababa;
+		
+		.btn-cmd-edit, .btn-cmd-delete {display: inline-block;}
+	}
 	
 	.page_pagination {margin: 2rem 0; }
 }

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   
   root 'articles#index'
   
-  resources  :users, only: [:edit, :update]
+  resources  :users,   only: [:edit, :update]
   devise_for :users
   
   resources :comments, only: [:create, :destroy] do
@@ -18,7 +18,9 @@ Rails.application.routes.draw do
 	end
   end
   
-  resources :tags, only: [:index, :show]
+  resources :tags,    only: [:index, :show]
+
+  get   'maket',    controller: 'statics', action: 'show'
   
   get   'error/denied',    controller: 'welcome', action: 'error_access_denied'
   get   'error/not_found', controller: 'welcome', action: 'error_not_found'

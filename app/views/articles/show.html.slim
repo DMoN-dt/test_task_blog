@@ -98,11 +98,11 @@ p = @article.content.gsub(/[\n]+/, "<br/>").html_safe
       }
     }
     
-    window["article_show_onload"] = function (page_frame){
+    window["article_show_onload"] = function (){
       $(document).on("click", article_show_onclick);
     }
     
-    window["article_show_teardown"] = function (page_frame){
+    window["article_show_teardown"] = function (){
       $(document).off("click", article_show_onclick);
     }
   

@@ -19,5 +19,5 @@
     = link_to 'Читать', article, class: 'btn btn-primary'
     
     - if(article.user_id == @current_user_id)
-      = link_to 'Редактировать', edit_article_path(article), class: 'btn btn-success'
-      = link_to 'Удалить', article, data: { confirm: 'Вы уверены?' }, method: :delete, class: 'btn btn-warning'
+      = link_to 'Редактировать', edit_article_path(article), class: 'btn btn-success btn-cmd-edit'
+      = link_to 'Удалить', article, data: { confirm: 'Вы уверены?' }, method: :delete, class: 'btn btn-warning btn-cmd-delete'

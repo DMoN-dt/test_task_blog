@@ -1,0 +1,81 @@
+# encoding: UTF-8
+
+.maket
+  .row
+    .col-md-12
+      center
+        .fcarousel
+          .fcl-inner
+            - if(@slider_captions_list.present?)
+              - first_item = true
+              - @slider_captions_list.each do |scl|
+                .fcl-item(style="#{first_item ? 'z-index: 100; display: block;' : 'z-index: 99; display: none;'}")
+                  img[src="#{scl[:img]}"]
+                  .fcli-caption
+                    .fcli-caption-bg.rounded-right.d-flex.justify-content-start
+                      <div class="p-2 align-self-center"><div class="fcli-btn prev rounded-circle">&laquo;</div></div>
+                      <div class="p-2 align-self-center"><div class="fcli-btn next rounded-circle">&raquo;</div></div>
+                      
+                      .fcli-title.p-2 = scl[:title]
+                      .ml-auto.p-2.align-self-center
+                        .btn.btn-yellow Начать обучение &raquo;
+                - first_item = false
+
+
+javascript:
+  
+  function static_show_onclick(event){
+    etarget = $(event.target);
+    if(etarget.is(".fcarousel .fcli-btn")){
+      clearInterval(window["fcarouselID"]);
+
+      if(etarget.is(".next"))static_show_next_carousel();
+      else if(etarget.is(".prev"))static_show_prev_carousel();
+      
+      window["fcarouselID"] = setInterval(static_show_next_carousel, #{@carousel_time_interval});
+    }
+  }
+  
+  function static_show_next_carousel(){
+    fcl = $(".fcarousel .fcl-inner:first");
+    fcl_slide = fcl.children(".fcl-item:first");
+    fcl_next = fcl_slide.next();
+    
+    fcl_slide.css({'z-index' : 100});
+    fcl_next.css({'z-index' : 99});
+    fcl_next.show(0, function(){
+      fcl_slide.fadeOut(#{@carousel_fade_time}, function(){
+        fcl_next.css({'z-index' : 100});
+        fcl_slide.appendTo(".fcarousel .fcl-inner");
+        fcl_slide.css({'z-index' : 99});
+      });
+    });
+  }
+  
+  function static_show_prev_carousel(){
+    fcl = $(".fcarousel .fcl-inner:first");
+    fcl_slide = fcl.children(".fcl-item:first");
+    fcl_next = fcl.children(".fcl-item:last");
+    
+    fcl_next.insertBefore(fcl_slide);
+    fcl_next.css({'z-index' : 100});
+    fcl_slide.css({'z-index' : 99});
+    
+    fcl_next.fadeIn(#{@carousel_fade_time}, function(){
+      fcl_slide.hide();
+    });
+  }
+  
+  
+  window["static_show_onload"] = function (){
+    $(document).on("click", static_show_onclick);
+    window["fcarouselID"] = setInterval(static_show_next_carousel, #{@carousel_time_interval});
+  }
+
+  window["static_show_teardown"] = function (){
+    $(document).off("click", static_show_onclick);
+    clearInterval(window["fcarouselID"]);
+  }
+  
+  $(document).on("turbolinks:load", window["static_show_onload"]);
+  $(document).on("turbolinks:before-cache", window["static_show_teardown"]);

@@ -1,0 +1,52 @@
+// Place all the styles related to the statics controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.maket {
+	background: #242424;
+	padding: 3rem 0;
+	
+	.fcarousel{
+		width: 1022px;
+		background: #fff;
+		padding: 2rem 1.5rem;;
+		
+		.fcl-inner {
+			position: relative;
+			height: 347px;
+			
+			.fcl-item {position: absolute; left: 1rem; display: none;}
+			
+			.fcli-caption {
+				width: 100%;
+				position: absolute; bottom: 1.5rem;
+				padding: 0 1rem 0 0;
+				
+				.fcli-caption-bg {
+					background-color:rgba(0, 0, 0, 0.35);
+					padding: 0 .5rem; margin-right: .7rem;
+					height: 5.3rem;
+				}
+				
+				.fcli-title {
+					font-size: 1.8rem;
+					line-height: 2rem;
+					text-align: left;
+					color: #fff;
+					margin: 0 1rem;
+				}
+				
+				.fcli-btn {
+					width: 36px; height: 36px; line-height: 28px;
+					font-size: 2rem;
+					color: #fff; background-color: #242424;
+					cursor: pointer;
+				}
+				
+				.fcli-btn:hover, .fcli-btn:active, .fcli-btn:focus {
+					background-color: #4c4b4b;
+				}
+			}
+		}
+	}
+}
