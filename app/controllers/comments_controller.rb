@@ -1,4 +1,9 @@
 class CommentsController < ApplicationController
+  before_action :authenticate_and_authorize_user_action,             except: [:inline_update, :destroy]
+  before_action :set_comment,                                        only:   [:inline_update, :destroy]
+  before_action :authenticate_and_authorize_user_action_and_object,  only:   [:inline_update, :destroy]
+  after_action  :verify_authorized
+  
   
   # POST /comments
   # POST /comments.json
@@ -6,11 +11,12 @@ class CommentsController < ApplicationController
     comment_params = params.require(:comment).permit(:content, :article_id)
 	
 	@comment = Comment.new(comment_params)
-	@comment[:user_id] = current_user.id
+	@comment[:user_id] = current_user.id if(current_user.present?)
 
     respond_to do |format|
       if @comment.save
-        format.html { redirect_to article_path(id: comment_params[:article_id]), notice: 'Комментарий успешно добавлен.' }
+        @comment_id = @comment.id
+		format.html { redirect_to article_path(id: comment_params[:article_id]), notice: 'Комментарий успешно добавлен.' }
         format.json { render :show, status: :created, location: @comment }
       else
         format.html { render :new }
@@ -22,7 +28,6 @@ class CommentsController < ApplicationController
   
   # POST /comments/inline_update.js
   def inline_update
-	@comment = Comment.find(params.require(:comment).permit(:id)[:id])
 	@comment_id = @comment.id
 	
 	if(@comment.created_at >= 15.minutes.ago)
@@ -39,7 +44,6 @@ class CommentsController < ApplicationController
   
   # DELETE /comments/1.js
   def destroy
-    @comment = Comment.find(params[:id])
 	@comment_id = @comment.id
 	
 	if(@comment.created_at >= 15.minutes.ago)
@@ -53,6 +57,22 @@ class CommentsController < ApplicationController
     end
   end
 
+  
   private
-
+	
+	def authenticate_and_authorize_user_action
+		authenticate_user!
+		authorize Comment
+	end
+	
+	
+	def authenticate_and_authorize_user_action_and_object
+		authenticate_user!
+		authorize @comment
+	end
+	
+	
+	def set_comment
+		@comment = Comment.find(params[:id].present? ? params[:id] : params.require(:comment).permit(:id)[:id])
+    end
 end

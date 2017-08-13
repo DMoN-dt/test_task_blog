@@ -1,18 +1,10 @@
 class CommentPolicy < ApplicationPolicy
 
-	def new?
-		user.is_allowed_write_comments?
-	end
-	
 	def create?
 		user.is_allowed_write_comments?
 	end
 	
-	def edit?
-		is_allowed_to_record?
-	end
-	
-	def update?
+	def inline_update?
 		is_allowed_to_record?
 	end
 	

@@ -27,12 +27,12 @@ p = @article.content.gsub(/[\n]+/, "<br/>").html_safe
     p Ваш комментарий:
     = form_for 'comment', url: comments_path do |f|
       = f.hidden_field(:article_id, :value => @article.id)
-      = f.text_area :content, class: 'form-control', rows: 5
+      = f.text_area :content, class: 'form-control', rows: 5, required: true
       = f.submit "Комментировать", class: 'btn btn-primary btn-send'
     
     = form_for 'comment', url: inline_update_comments_path, remote: true, method: :post, html: {class: 'hidden-xs-up', id: 'edit_comment'} do |f|
       = f.hidden_field(:id, :value => '')
-      = f.text_area :content, class: 'form-control', rows: 5
+      = f.text_area :content, class: 'form-control', rows: 5, required: true
       = f.submit "Обновить", class: 'btn btn-warning btn-send'
       span.btn.btn-secondary.btn-cancel Отмена
     
@@ -46,7 +46,7 @@ p = @article.content.gsub(/[\n]+/, "<br/>").html_safe
           span.create-date #{I18n.l(comment.created_at, :format => :long)}
           span.author-name Автор: #{(comment.user_id == @current_user_id) ? ('Вы (' + author_name.to_s + ')') : author_name}
 
-          - if(comment.user_id == @current_user_id)
+          - if(comment.user_id == @current_user_id) && (comment.created_at >= 15.minutes.ago)
             span#change_comment.ctrl-btn Изменить
             = link_to 'Удалить', comment, method: :delete, remote: true, class: 'ctrl-btn', id: 'delete_comment'
         
@@ -62,12 +62,12 @@ p = @article.content.gsub(/[\n]+/, "<br/>").html_safe
         if(parent_obj.length == 1){
           obj = $("form#edit_comment");
           if(obj.length == 1){
-			form_parent = obj.parents(".comment[data-id]:first");
-			if(form_parent.length == 1){
-			  form_parent.children(".content").show();
-			}
-			
-			obj.detach();
+            form_parent = obj.parents(".comment[data-id]:first");
+            if(form_parent.length == 1){
+              form_parent.children(".content").show();
+            }
+            
+            obj.detach();
             obj.appendTo(parent_obj);
             obj.children("#comment_id:first").val(parent_obj.attr('data-id'));
             
@@ -92,7 +92,7 @@ p = @article.content.gsub(/[\n]+/, "<br/>").html_safe
           content_obj = parent_obj.children(".content");
           if(content_obj.length == 1){
             obj.addClass('hidden-xs-up');
-			content_obj.show();
+            content_obj.show();
           }
         }
       }

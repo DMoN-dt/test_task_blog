@@ -51,11 +51,14 @@ gem 'pundit'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 2.13'
+  gem 'rspec-rails', '~> 3.6'
+  gem 'rails-controller-testing'
+  gem 'shoulda-matchers'
+  gem 'factory_girl_rails'
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'capybara', '~> 2.13' # Adds support for Capybara system testing and selenium driver
   gem 'selenium-webdriver'
+  gem 'simplecov', :require => false
 end
 
 group :development do

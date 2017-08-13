@@ -1,5 +1,3 @@
-PER_PAGE_ARTICLES_COUNT = 5
-
 class ArticlesController < ApplicationController
   before_action :authenticate_and_authorize_user_action,             except: [:index, :show,   :edit,   :update, :destroy]
   before_action :set_article,                                        only:   [:show,  :edit,   :update, :destroy]
@@ -90,7 +88,8 @@ class ArticlesController < ApplicationController
   # DELETE /articles/1
   # DELETE /articles/1.json
   def destroy
-    @article.destroy
+    Comment.where(article_id: @article.id).destroy_all
+	@article.destroy
     respond_to do |format|
       format.html { redirect_to my_articles_url, notice: 'Пост удалён.' }
       format.json { head :no_content }
@@ -152,6 +151,7 @@ class ArticlesController < ApplicationController
     def article_params
       p = params.require(:article).permit(:title, :content, :is_published, :created_at, :tag_list)
 	  p[:tag_list] = p[:tag_list].split(/(\s)/) if(p[:tag_list].present?)
+	  p.delete_if{|x| x == :created_at} if(p[:created_at].blank?)
 	  return p
     end
 end

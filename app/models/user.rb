@@ -7,7 +7,7 @@ class User < ApplicationRecord
 	validates  :nickname, length: { maximum: 50 }
 	
 	devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :lockable
+         :rememberable, :trackable, :lockable
 		
 	
 	

@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
 			flash[:alert] = exception.message
 		end
 	end
-	redirect_to controller: 'welcome', action: 'error_access_denied'
+	redirect_to controller: 'welcome', action: 'error_access_denied', status: 403
   end
   
   

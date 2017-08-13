@@ -16,7 +16,7 @@
   
   p.content #{(truncate article.content, length: 200, separator: /\w/, omission: "...").gsub(/[\n]+/, "<br/>").html_safe}
   .buttons
-    = link_to 'Читать', article, class: 'btn btn-primary'
+    = link_to 'Читать далее...', article, class: 'btn btn-secondary'
     
     - if(article.user_id == @current_user_id)
       = link_to 'Редактировать', edit_article_path(article), class: 'btn btn-success btn-cmd-edit'
